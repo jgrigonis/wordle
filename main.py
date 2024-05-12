@@ -118,11 +118,13 @@ class Game():
 
 
     def show_alphabet(self):
+        """Show the alphabet, colorized."""
         for letter in self.game.alphabet:
             print(letter, end=' ')
         print("")
 
     def show_color_boxes(self):
+        """These are the colored squares, showing your matches."""
         if self.game.guess_list == []:
             print("No guesses made yet.")
             return
@@ -132,6 +134,7 @@ class Game():
         print("")
 
     def show_history(self):
+        """Show the past guesses."""
         if self.game.guess_list == []:
             print("You haven't made any guesses.")
             return
@@ -141,6 +144,7 @@ class Game():
         print("")
     
     def show_commands(self):
+        """List out the commands for the user."""
         print("Commands:")
         print("quit - completely quit the game")
         print("exit - exit the current puzzle")
@@ -153,16 +157,10 @@ class Game():
         print("commands - show this list")
         print("")
 
-
-    def bye(self):
-        print("OK, bye!")
-        print("The answer was:")
-        print(Word(a_string=self.game.answer))
-        quit()
-
     def handle_special(self, guess):
+        """Deal with the special commands."""
         if guess == "quit":
-            self.bye()
+            self.end_game("OK, bye!\nThe answer was:", False)
         if guess == "exit":
             self.end_game("The answer was:")
         if guess == "help":
@@ -192,12 +190,16 @@ class Game():
         return self.play_again()
 
 
-    def end_game(self, exit_message):
+    def end_game(self, exit_message, ask=True):
+        """End a game."""
         print(exit_message)
         print(Word(a_string=self.game.answer))
         self.game_over = True
         self.show_color_boxes()
-        if not self.play_again():
+        if ask:
+            if not self.play_again():
+                quit()
+        else:
             quit()
             
 

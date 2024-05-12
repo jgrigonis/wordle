@@ -6,6 +6,10 @@ from colors import color
 
 
 class Letter():
+    """Represents a single letter in a word. Has a value, which is
+    just simply the character, and a color which is the color of the
+    letter.
+    """
     def __init__(self, value, color="GREEN"):
         self.value = value
         self.color = color
@@ -24,6 +28,7 @@ class Letter():
         output = output + color("END").color
         return output
     def squared(self):
+        """The special 'square' characters for outputting results."""
         output = color(self.color).color
         output = output + '\u25A0'
         output = output + color("END").color
@@ -31,6 +36,7 @@ class Letter():
 
 
 class Word():
+    """A list of Letters, comprising a Word."""
     def __init__(self, letters=None, a_string=None):
         if letters is None:
             self.letters = []
@@ -56,6 +62,7 @@ class Word():
         return iter(self.letters)
     
     def squared(self):
+        """The special 'square' characters for outputting results."""
         output = ""
         for letter in self.letters:
             output = output + letter.squared()
