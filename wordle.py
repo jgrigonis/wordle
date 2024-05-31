@@ -123,45 +123,65 @@ class Wordle():
             return
         remainder = []
         output = ["", "", "", "", ""]
+        # first pass, look for exact positional matches only
+        # put other characters from the answer into the remainder
         for counter in range(5):
             if self.answer[counter] == guess[counter]:
                 output[counter] = Letter(guess[counter], "GREEN")
                 self.greenlight(guess[counter])
             else:
                 remainder.append(self.answer[counter])
+        # second pass
         for counter in range(5):
+            # if the output is not yet filled
             if output[counter] == "":
+                # if the letter in the remainder
                 if guess[counter] in remainder:
                     output[counter] = Letter(guess[counter], "YELLOW")
+                    #if guess[counter] not in output:
                     remainder.remove(guess[counter])
                     self.yellowlight(guess[counter])
                 else:
                     output[counter] = Letter(guess[counter], "RED")
-                    self.redlight(guess[counter])
+                    if guess[counter] not in output:
+                        self.redlight(guess[counter])
         value = Word(output)
         self.guess_list.append(value)
         return value
 
     def greenlight(self, letter):
+        """Turn a letter green when it is in correct position."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "GREEN") if x==letter else x for x in self.alphabet]
-            #self.alphabet.replace(letter, Letter(letter, "GREEN"))
+            self.alphabet = [Letter(letter, "GREEN") if x==letter 
+                             else x for x in self.alphabet]
     
     def yellowlight(self, letter):
+        """Turn a letter yellow when it is in the word, but somewhere else."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "YELLOW") if x==letter else x for x in self.alphabet]
+            self.alphabet = [Letter(letter, "YELLOW") if x==letter 
+                             else x for x in self.alphabet]
             
     
     def redlight(self, letter):
+        """Turn the letter red if it's missing from the answer."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "RED") if x==letter else x for x in self.alphabet]
+            self.alphabet = [Letter(letter, "RED") if x==letter 
+                             else x for x in self.alphabet]
             
 
     def validate_guess(self, guess):
+        """Verify a guess is in the guess words list."""
         if guess not in self.guess_words_list:
             self.bad_guess(guess)
 
 
     def bad_guess(self, guess):
+        """Throw an error when the guess is bad."""
         print("{} is not a valid guess".format(guess))
         raise ValueError
+
+def main():
+    print("Try running main.py")
+
+if __name__ == '__main__':
+    main()

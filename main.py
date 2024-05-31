@@ -7,7 +7,7 @@ from wordle import Letter
 class Game():
     def __init__(self):
         self.intro()
-        self.game = Wordle()
+        self.game = Wordle("piney")
         self.game_over = False
         self.guesses = 0
         self.special_words = [
@@ -25,6 +25,7 @@ class Game():
         self.prompt = "What is your guess? "
 
     def intro(self):
+        """Display the way the game works, explain the colors."""
         print("You get 6 guesses.")
         print("Each guess should be a 5 letter word.")
         print("Green letters mean your letter is in the right location")
@@ -33,6 +34,7 @@ class Game():
         print("")
 
     def set_prompt(self):
+        """Ask the user for their guess."""
         tries = ""
         if self.guesses == 0:
             tries = "first"
@@ -49,6 +51,7 @@ class Game():
         self.prompt = "What is your {} guess? ".format(tries)
 
     def do_guess(self):
+        """Handle a single guess."""
         self.set_prompt()
         guess = input(self.prompt)
         if guess in self.special_words:
@@ -57,6 +60,7 @@ class Game():
         return guess
 
     def play_game(self):
+        """Run the game until it's over."""
         while not self.game_over:
             guess = self.game.handle_guess(self.do_guess())
             if guess:
@@ -182,6 +186,7 @@ class Game():
             self.show_color_boxes()
         
     def play_again(self):
+        """Ask to restart the game."""
         answer = input("Do you want to play again? (y/n)")
         if answer.lower().startswith("y"):
             return True
