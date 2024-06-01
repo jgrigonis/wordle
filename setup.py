@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(
-    name='wordle',
-    version='1.0',
-    py_modules=['wordle'],
+    name="wordle",
+    version="1.0",
+    py_modules=["wordle"],
 )

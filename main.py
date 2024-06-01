@@ -133,7 +133,6 @@ class Game:
             print("No guesses made yet.")
             return
         for guess in self.game.guess_list:
-
             print(guess.squared())
         print("")
 
