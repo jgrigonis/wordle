@@ -7,7 +7,7 @@ from wordle import Letter
 class Game():
     def __init__(self):
         self.intro()
-        self.game = Wordle("piney")
+        self.game = Wordle()
         self.game_over = False
         self.guesses = 0
         self.special_words = [
