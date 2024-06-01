@@ -48,3 +48,14 @@ The answer was:
 piney
 
 The e goes red but it should stay green.
+
+
+set the answer to sweet
+
+guess crepe
+
+first e should be green, second should be yellow
+c r p should all be red
+try qwerty or alphabet and verify
+
+

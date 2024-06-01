@@ -1,3 +1,4 @@
+import copy
 import os
 import random
 import string
@@ -68,7 +69,6 @@ class Word():
             output = output + letter.squared()
         return output
 
-        
 
 class Wordle():
     def __init__(self, answer=None):
@@ -103,6 +103,54 @@ class Wordle():
         return answer
 
 
+    def first_pass(self, guess):
+        """Do the first pass with the guess.
+        Return the output with green letters for exact matches.
+        Return a remainder that has all the letters in answer
+        that were not matched exactly and positionally.
+        """
+        remainder = []
+        output = ["", "", "", "", ""]
+        for counter in range(5):
+            if self.answer[counter] == guess[counter]:
+                output[counter] = Letter(guess[counter], "GREEN")
+                self.greenlight(guess[counter])
+            else:
+                remainder.append(self.answer[counter])
+        return output, remainder
+    
+
+    def second_pass(self, guess, output, remainder):
+        """Do the second pass on the guess.
+        All the characters in output that aren't blank are guaranteed 
+        to not be perfect matches.
+
+        """
+        # create a list of just the raw letter values in putput
+        letter_list = []
+        for letter in output:
+            if letter:
+                letter_list.append(letter.value)
+        for counter in range(5):
+            # if the output is not yet filled
+            if output[counter] == "":
+                # if the letter in the remainder
+                if guess[counter] in remainder:
+                    output[counter] = Letter(guess[counter], "YELLOW")
+                    remainder.remove(guess[counter])
+                    # if it's not already green, set it yellow in the alphabet
+                    if guess[counter] not in letter_list:
+                        self.yellowlight(guess[counter])
+                    letter_list.append(guess[counter])
+                # if it's not in the remainder, turn it red in the output
+                else:
+                    output[counter] = Letter(guess[counter], "RED")
+                    # if it's not already green or yellow, turn it red
+                    if guess[counter] not in letter_list:
+                        self.redlight(guess[counter])
+        return output
+
+
     def handle_guess(self, guess):
         """This will handle a guess string, and determine the colors, green
         for a positional match, and yellow for a letter found elsewhere.
@@ -121,33 +169,15 @@ class Wordle():
             self.validate_guess(guess)
         except ValueError:
             return
-        remainder = []
-        output = ["", "", "", "", ""]
         # first pass, look for exact positional matches only
         # put other characters from the answer into the remainder
-        for counter in range(5):
-            if self.answer[counter] == guess[counter]:
-                output[counter] = Letter(guess[counter], "GREEN")
-                self.greenlight(guess[counter])
-            else:
-                remainder.append(self.answer[counter])
+        output, remainder = self.first_pass(guess)
         # second pass
-        for counter in range(5):
-            # if the output is not yet filled
-            if output[counter] == "":
-                # if the letter in the remainder
-                if guess[counter] in remainder:
-                    output[counter] = Letter(guess[counter], "YELLOW")
-                    #if guess[counter] not in output:
-                    remainder.remove(guess[counter])
-                    self.yellowlight(guess[counter])
-                else:
-                    output[counter] = Letter(guess[counter], "RED")
-                    if guess[counter] not in output:
-                        self.redlight(guess[counter])
+        output = self.second_pass(guess, output, remainder)
         value = Word(output)
         self.guess_list.append(value)
         return value
+
 
     def greenlight(self, letter):
         """Turn a letter green when it is in correct position."""
