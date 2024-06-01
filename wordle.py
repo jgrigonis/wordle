@@ -6,11 +6,12 @@ import string
 from colors import color
 
 
-class Letter():
+class Letter:
     """Represents a single letter in a word. Has a value, which is
     just simply the character, and a color which is the color of the
     letter.
     """
+
     def __init__(self, value, color="GREEN"):
         self.value = value
         self.color = color
@@ -22,22 +23,25 @@ class Letter():
         else:
             if self.value == other.value:
                 return True
-        return False    
+        return False
+
     def __str__(self):
         output = color(self.color).color
         output = output + self.value
         output = output + color("END").color
         return output
+
     def squared(self):
         """The special 'square' characters for outputting results."""
         output = color(self.color).color
-        output = output + '\u25A0'
+        output = output + "\u25A0"
         output = output + color("END").color
         return output
 
 
-class Word():
+class Word:
     """A list of Letters, comprising a Word."""
+
     def __init__(self, letters=None, a_string=None):
         if letters is None:
             self.letters = []
@@ -58,10 +62,10 @@ class Word():
             if self.letters[count] != other.letters[count]:
                 return False
         return True
-    
+
     def __iter__(self):
         return iter(self.letters)
-    
+
     def squared(self):
         """The special 'square' characters for outputting results."""
         output = ""
@@ -70,7 +74,7 @@ class Word():
         return output
 
 
-class Wordle():
+class Wordle:
     def __init__(self, answer=None):
         DATA_DIR = os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
@@ -84,14 +88,12 @@ class Wordle():
         self.guess_list = []
         self.alphabet = list(string.ascii_lowercase)
 
-
     def setup_word_list(self, word_file):
         """Create a word list based on a word file."""
         word_list = []
         with open(word_file) as wf:
             word_list.extend([word.strip() for word in wf.readlines()])
         return word_list
-
 
     def set_answer(self, answer=None):
         """This function will take an answer as input and set the answer to
@@ -101,7 +103,6 @@ class Wordle():
         if answer is None:
             answer = random.choice(self.answer_words_list)
         return answer
-
 
     def first_pass(self, guess):
         """Do the first pass with the guess.
@@ -118,19 +119,24 @@ class Wordle():
             else:
                 remainder.append(self.answer[counter])
         return output, remainder
-    
 
-    def second_pass(self, guess, output, remainder):
-        """Do the second pass on the guess.
-        All the characters in output that aren't blank are guaranteed 
-        to not be perfect matches.
-
+    def output_letter_list(output):
+        """Create a list of just the raw letters in the list of
+        Letters in output.
         """
-        # create a list of just the raw letter values in putput
         letter_list = []
         for letter in output:
             if letter:
                 letter_list.append(letter.value)
+        return letter_list
+
+    def second_pass(self, guess, output, remainder):
+        """Do the second pass on the guess.
+        All the characters in output that aren't blank are guaranteed
+        to not be perfect matches.
+        """
+        # create a list of just the raw letter values in output
+        letter_list = self.output_letter_list(output)
         for counter in range(5):
             # if the output is not yet filled
             if output[counter] == "":
@@ -149,7 +155,6 @@ class Wordle():
                     if guess[counter] not in letter_list:
                         self.redlight(guess[counter])
         return output
-
 
     def handle_guess(self, guess):
         """This will handle a guess string, and determine the colors, green
@@ -178,40 +183,41 @@ class Wordle():
         self.guess_list.append(value)
         return value
 
-
     def greenlight(self, letter):
         """Turn a letter green when it is in correct position."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "GREEN") if x==letter 
-                             else x for x in self.alphabet]
-    
+            self.alphabet = [
+                Letter(letter, "GREEN") if x == letter else x for x in self.alphabet
+            ]
+
     def yellowlight(self, letter):
         """Turn a letter yellow when it is in the word, but somewhere else."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "YELLOW") if x==letter 
-                             else x for x in self.alphabet]
-            
-    
+            self.alphabet = [
+                Letter(letter, "YELLOW") if x == letter else x for x in self.alphabet
+            ]
+
     def redlight(self, letter):
         """Turn the letter red if it's missing from the answer."""
         if letter in self.alphabet:
-            self.alphabet = [Letter(letter, "RED") if x==letter 
-                             else x for x in self.alphabet]
-            
+            self.alphabet = [
+                Letter(letter, "RED") if x == letter else x for x in self.alphabet
+            ]
 
     def validate_guess(self, guess):
         """Verify a guess is in the guess words list."""
         if guess not in self.guess_words_list:
             self.bad_guess(guess)
 
-
     def bad_guess(self, guess):
         """Throw an error when the guess is bad."""
         print("{} is not a valid guess".format(guess))
         raise ValueError
 
+
 def main():
     print("Try running main.py")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

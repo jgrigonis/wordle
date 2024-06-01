@@ -4,20 +4,21 @@ from wordle import Wordle
 from wordle import Word
 from wordle import Letter
 
-class Game():
+
+class Game:
     def __init__(self):
         self.intro()
         self.game = Wordle()
         self.game_over = False
         self.guesses = 0
         self.special_words = [
-            "quit", 
-            "exit", 
-            "help", 
-            "unused", 
-            "history", 
-            "qwerty", 
-            "alphabet", 
+            "quit",
+            "exit",
+            "help",
+            "unused",
+            "history",
+            "qwerty",
+            "alphabet",
             "hint",
             "commands",
             "squares",
@@ -81,7 +82,7 @@ class Game():
                 if letter in word:
                     found = True
             if not found:
-                print(letter, end=' ')
+                print(letter, end=" ")
         print()
 
     def show_qwerty(self):
@@ -120,11 +121,10 @@ class Game():
         print(self.game.alphabet[12], end=" ")
         print("")
 
-
     def show_alphabet(self):
         """Show the alphabet, colorized."""
         for letter in self.game.alphabet:
-            print(letter, end=' ')
+            print(letter, end=" ")
         print("")
 
     def show_color_boxes(self):
@@ -146,7 +146,7 @@ class Game():
         for guess in self.game.guess_list:
             print(guess)
         print("")
-    
+
     def show_commands(self):
         """List out the commands for the user."""
         print("Commands:")
@@ -184,7 +184,7 @@ class Game():
             self.show_commands()
         if guess == "squares":
             self.show_color_boxes()
-        
+
     def play_again(self):
         """Ask to restart the game."""
         answer = input("Do you want to play again? (y/n)")
@@ -193,7 +193,6 @@ class Game():
         if answer.lower().startswith("n"):
             return False
         return self.play_again()
-
 
     def end_game(self, exit_message, ask=True):
         """End a game."""
@@ -206,12 +205,13 @@ class Game():
                 quit()
         else:
             quit()
-            
+
 
 def main():
     while True:
         x = Game()
         x.play_game()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
