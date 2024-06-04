@@ -22,7 +22,8 @@ class Letter:
                 return True
         else:
             if self.value == other.value:
-                return True
+                if self.color == other.color:
+                    return True
         return False
 
     def __str__(self):
@@ -84,7 +85,7 @@ class Wordle:
         self.answer_words_list = self.setup_word_list(ANSWER_WORDS_FILE)
         GUESS_WORDS_FILE = os.path.join(DATA_DIR, "guess_words.txt")
         self.guess_words_list = self.setup_word_list(GUESS_WORDS_FILE)
-        self.answer = self.set_answer(answer)
+        self.set_answer(answer)
         self.guess_list = []
         self.alphabet = list(string.ascii_lowercase)
 
@@ -101,8 +102,9 @@ class Wordle:
         allowable word list.
         """
         if answer is None:
-            answer = random.choice(self.answer_words_list)
-        return answer
+            self.answer = random.choice(self.answer_words_list)
+        else:
+            self.answer = answer
 
     def first_pass(self, guess):
         """Do the first pass with the guess.
@@ -120,7 +122,7 @@ class Wordle:
                 remainder.append(self.answer[counter])
         return output, remainder
 
-    def output_letter_list(output):
+    def output_letter_list(self, output):
         """Create a list of just the raw letters in the list of
         Letters in output.
         """

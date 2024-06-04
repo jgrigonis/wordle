@@ -18,3 +18,6 @@ qwerty - show all the letters appropriately colored
 alphabet - show all the letters appropriately colored
 hint - it's like cheating
 commands - show this list
+
+To run unit tests:
+python -m pytest
