@@ -4,6 +4,7 @@ from wordle import Letter
 from wordle import Wordle
 from wordle import Word
 
+
 @pytest.fixture
 def mywordle():
     mywordle = Wordle()

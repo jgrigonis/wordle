@@ -77,15 +77,16 @@ class Game:
 
     def show_unused(self):
         """Print the letters from a to z that don't appear in a guess."""
-        print("Unused letters:")
+        output = "Unused letters:\n"
         for letter in string.ascii_lowercase:
             found = False
             for word in self.game.guess_list:
                 if letter in word:
                     found = True
             if not found:
-                print(letter, end=" ")
-        print()
+                output += letter + " "
+        output += "\n"
+        return output
 
     def show_qwerty(self):
         """Print the letters in the configuration of a qwerty keyboard
@@ -125,9 +126,11 @@ class Game:
 
     def show_alphabet(self):
         """Show the alphabet, colorized."""
+        output = ""
         for letter in self.game.alphabet:
-            print(letter, end=" ")
-        print("")
+            output += str(letter) + " "
+        output += "\n"
+        return output
 
     def show_color_boxes(self):
         """These are the colored squares, showing your matches."""
@@ -172,13 +175,13 @@ class Game:
             self.intro()
             print("Try `commands` to see the special commands.")
         if guess == "unused":
-            self.show_unused()
+            print(self.show_unused())
         if guess == "history":
             self.show_history()
         if guess == "qwerty":
             self.show_qwerty()
         if guess == "alphabet":
-            self.show_alphabet()
+            print(self.show_alphabet())
         if guess == "hint":
             print("There are no hints in Wordle, Get Good.")
         if guess == "commands":
